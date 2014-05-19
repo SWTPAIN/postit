@@ -1,11 +1,23 @@
+<p class='pull-right'>
+  [<%= link_to 'edit this post', edit_post_path(@post) %>]
+</p>
 <p>
   <%= render @post.categories%>
 </p>
 
 <%= render 'shared/content_title' ,title: @post.title%>   <!-- without underscore!! -->
 
+<%= render 'shared/errors_display', obj: @comment %>
 <p>
 <%= @post.description %><hr/>
 </p>
 
+<h5>Create a comment:</h5>
+<%= form_for [@post, @comment]  do |f| %> <!-- short-cut, the first obj (parent object) has to be existed and the second one has to be new. Remember nested
+e.g. /post/3/comments -->
+  <%= f.text_area :body %>
+  <br/>
+  <%= f.submit "Create Comment", class: "btn btn-primary" %>
+<% end %>
 
+<%= link_to 'go back to all posts', posts_path %>

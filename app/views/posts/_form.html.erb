@@ -1,0 +1,15 @@
+<%= render 'shared/errors_display', obj: @post %>
+<div class='well'>
+  <%= form_for @post do |f| %>  <!-- f is a form helper object -->
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+    <br/>
+    <%= f.label :url %>
+    <%= f.text_field :url %>
+    <br/>
+    <%= f.label :description %>
+    <%= f.text_area :description, rows: 5 %>
+    <br/>
+    <%= f.submit (@post.new_record? ? "Create Post" : "Update Post"), class: 'btn btn-primary' %>
+  <% end %>
+</div>
