@@ -1,0 +1,32 @@
+<%= render 'shared/content_title', title:"Profile: #{@user.username}" %>
+
+<div class='well'>
+<d1 class='dl-horizontal'>
+<dt>Usernaame: </dt>
+<dd><%= @user.username %></dd>
+</d1>
+</div>
+
+<h5><%= @user.username %>'s Activity</h5>
+
+<ul class='nav nav-tabs'>
+<li class='<%= 'active' if params[:tab].nil?%>' >   <!-- the trick here is we only want to show the link is active when the tab is clicked on -->
+  <%= link_to "Posts(#{@user.posts.size})", user_path(@user) %> <!-- it add a hash :tab => 'comments' in params -->
+</li>
+<li class='<%= 'active' if params[:tab]=='comments'%>'>
+  <%= link_to "Comments(#{@user.comments.size})", user_path(@user, tab:'comments') %>
+</li>
+</ul>
+
+<% if params[:tab].nil? %>
+  <% @user.posts.each do |post| %>
+    <%= render 'posts/post', post:post %>
+    <br/>
+  <% end %>
+<% elsif params[:tab] == 'comments' %>
+  <% @user.comments.each do |comment| %>
+    <%= render 'comments/comment', comment: comment, show_post: true %>
+    <br/>
+  <% end %>
+
+<% end %>

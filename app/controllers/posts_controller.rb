@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update]  ##It mean the set_post methodo will be executed before these three action.
+  before_action :require_user, except: [:index, :show]
 
   def index
     @posts = Post.all
@@ -14,9 +15,8 @@ class PostsController < ApplicationController
   end
 
   def create
-
     @post = Post.new(post_params)
-    @post.creator =  User.first #TODO: change once we have authentication
+    @post.creator =  current_user #TODO: change once we have authentication
     if @post.save
       flash[:notice]= "Your post was created"
       redirect_to posts_path
@@ -42,7 +42,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title,:url, :description) #permite everything
+    params.require(:post).permit(:title,:url, :description, category_ids: []) #strong parameter syntax
   end
 
   def set_post

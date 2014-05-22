@@ -1,12 +1,13 @@
 <div class="row">
   <div class='span8 well'>
   <%= render post.categories %>
-  <h5><%=  link_to "Title: #{post.title}", post.url %><br/></h5>
+  <h5><%=  link_to "Title: #{post.title}", fix_url(post.url) %><br/></h5>
   <p><%=  "Descirption: #{post.description}"%><br/><p>
   <p>
-    <span class='quiet'>posted by</span> <%= post.creator.username if post.creator %> <small>at <%= post.created_at %></small>
+    <span class='quiet'>posted by</span> <%= link_to post.creator.username, user_path(post.creator) if post.creator %> <small>at <%= display_datetime post.created_at %></small>
   </p>
   <%= link_to "#{post.comments.size} Comment", post_path(post) %>
   <strong><%= link_to 'edit', edit_post_path(post) %></strong>
   </div>
 </div>
+
