@@ -1,4 +1,19 @@
 <div class="row">
+  <div class='span0 well text-center'>
+    <% if logged_in? %>
+      <%= link_to vote_post_path(post, vote: true), method:'post' do %>
+        <i class='icon-arrow-up' ></i>
+      <% end %>
+      <br/>
+    <% end %>
+    <%= post.total_votes %> <%= (post.total_votes >1 || post.total_votes <-1) ? "votes" : "vote" %>
+    <% if logged_in? %>
+      <br/>
+      <%= link_to vote_post_path(post, vote: false), method:'post' do %>
+        <i class='icon-arrow-down' ></i>
+      <% end %>
+    <% end %>    
+  </div>
   <div class='span8 well'>
   <%= render post.categories %>
   <h5><%=  link_to "Title: #{post.title}", fix_url(post.url) %><br/></h5>
@@ -7,7 +22,9 @@
     <span class='quiet'>posted by</span> <%= link_to post.creator.username, user_path(post.creator) if post.creator %> <small>at <%= display_datetime post.created_at %></small>
   </p>
   <%= link_to "#{post.comments.size} Comment", post_path(post) %>
+  <% if post.creator == current_user %>
   <strong><%= link_to 'edit', edit_post_path(post) %></strong>
+  <% end %>
   </div>
 </div>
 

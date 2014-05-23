@@ -11,6 +11,17 @@ class CommentsController < ApplicationController
     else
       render 'posts/show'
     end
-
   end
+
+  def vote
+    #note that vote is not model-backed. We dont use instance variable and therefore not use render.
+    @vote = Vote.create(vote:params[:vote],creator:current_user, voteable:Comment.find(params[:id]))
+    if @vote.valid?
+      flash[:notice] = "Your vote was counted."
+    else
+      flash[:error] = "You can only vote on a post once"
+    end
+    redirect_to :back
+  end
+
 end

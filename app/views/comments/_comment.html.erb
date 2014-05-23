@@ -1,5 +1,21 @@
-  <% show_post ||= false %> <!-- It is like a deafult setting of false -->
-  <div class='well'>
+<% show_post ||= false %> <!-- It is like a deafult setting of false -->
+<div class='row'>
+  <div class='span0 well text-center'>
+    <% if logged_in? %>
+      <%= link_to vote_post_comment_path(comment.post, comment, vote:true), method: 'post' do %>
+      <i class='icon-arrow-up'></i>
+      <% end %>
+      <br/>
+    <% end %>
+    <%= comment.total_votes %> <%= (comment.total_votes >1 || comment.total_votes <-1) ? "votes" : "vote" %>
+    <% if logged_in? %>
+      <br/>
+      <%= link_to vote_post_comment_path(comment.post, comment, vote:false), method: 'post' do %>
+      <i class='icon-arrow-down'></i>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='span8 well'>
   <em>"<%= comment.body %>"</em>
   <% if show_post %>
   on <%= link_to comment.post.title, post_path(comment.post) %>
@@ -7,3 +23,4 @@
   <br/>
   <span class='quiet'>by</span> <%= link_to comment.creator.username, user_path(comment.creator)  %> <small>at <%= display_datetime comment.created_at%></small> <!-- TODO add user path -->
   </div>
+</div>
