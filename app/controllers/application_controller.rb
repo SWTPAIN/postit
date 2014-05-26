@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def same_user?
-    @user == current_user
+    @post.creator == current_user
   end
 
 end

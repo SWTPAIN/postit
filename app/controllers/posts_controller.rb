@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :vote]  ##It mean the set_post methodo will be executed before these three action.
   before_action :require_user, except: [:index, :show]
   before_action :require_same_user, only:[:edit, :update]
-  def index
+   def index
     @posts = Post.all.sort_by{|post| post.total_votes}.reverse
   end
 
@@ -43,12 +43,18 @@ class PostsController < ApplicationController
 
   def vote
     @vote = Vote.create(vote:params[:vote],creator:current_user, voteable:@post)
-    if @vote.valid?
-      flash[:notice] = "Your vote was counted."
-    else
-      flash[:error] = "You can only vote on a post once"
+
+    respond_to do |format|  #This differentiate the type of request.
+      format.html do
+        if @vote.valid?
+          flash[:notice] = "Your vote was counted."
+        else
+          flash[:error] = "You can only vote on a post once"
+        end
+        redirect_to :back
+      end
+      format.js
     end
-    redirect_to :back
   end
 
   def post_params
@@ -56,8 +62,11 @@ class PostsController < ApplicationController
   end
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.find_by(slug: params[:id])
   end
+
+
+
 
 
 
