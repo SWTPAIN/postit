@@ -1,4 +1,7 @@
 <div class="row">
+  <div id="post_<%= post.slug %>_votes_error" class='alert alert-error span12' style='display :none'>
+    You can only vote once on a post
+  </div>  
   <div class='span0 well text-center'>
     <% if logged_in? %>
       <%= link_to vote_post_path(post, vote: true), method:'post', remote: true do %>
@@ -23,7 +26,7 @@
     <span class='quiet'>posted by</span> <%= link_to post.creator.username, user_path(post.creator) if post.creator %> <small>at <%= display_datetime post.created_at %></small>
   </p>
   <%= link_to "#{post.comments.size} Comment", post_path(post) %>
-  <% if post.creator == current_user %>
+  <% if logged_in? && (post.creator == current_user || current_user.admin?) %>
   <strong><%= link_to 'edit', edit_post_path(post) %></strong>
   <% end %>
   </div>

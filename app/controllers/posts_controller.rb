@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :vote]  ##It mean the set_post methodo will be executed before these three action.
   before_action :require_user, except: [:index, :show]
-  before_action :require_same_user, only:[:edit, :update]
+  before_action :require_creator, only:[:edit, :update]
    def index
     @posts = Post.all.sort_by{|post| post.total_votes}.reverse
   end
@@ -49,7 +49,7 @@ class PostsController < ApplicationController
         if @vote.valid?
           flash[:notice] = "Your vote was counted."
         else
-          flash[:error] = "You can only vote on a post once"
+          flash[:error] = "You can only vote on a post once" #It is not a tradtional form.
         end
         redirect_to :back
       end
@@ -66,6 +66,13 @@ class PostsController < ApplicationController
   end
 
 
+  def require_creator
+    access_denied unless same_user?
+  end
+
+  def same_user?
+    logged_in? && (@post.creator == current_user || current_user.admin?)
+  end
 
 
 

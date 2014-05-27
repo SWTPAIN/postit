@@ -23,15 +23,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def require_same_user
-    if ! same_user?
-      flash[:error] = "You're not allowed to do that"
-      redirect_to root_path
-    end
+
+  def require_admin
+    access_denied unless logged_in? && current_user.admin?
   end
 
-  def same_user?
-    @post.creator == current_user
+  def access_denied
+    flash[:error] = "You are not allowed to do that."
+    redirect_to root_path    
   end
-
 end

@@ -1,5 +1,5 @@
 <% if @vote.valid? %>
   $('#post_<%= @post.slug %>_votes').html('<%= display_votes(@post.total_votes) %>');
 <% else %>
-  alert('U cant vote twice');
+  $('#post_<%= @post.slug %>_votes_error').show()
 <% end %>

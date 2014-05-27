@@ -1,22 +1,9 @@
 class Category < ActiveRecord::Base;
+  include Sluggable
   has_many :post_categories
   has_many :posts, :through => :post_categories
 
   validates :name, presence: true, uniqueness: true
-  before_save :generate_slug!
+  sluggable_column :name
 
-
-
-  def to_slug(name)
-    "#{name.strip.downcase.gsub(/\s*[^A-Za-z0-9]\s*/,'-').gsub(/-+/,'-')
-}"
-  end
-
-  def generate_slug!
-    self.slug = to_slug(self.name)
-  end
-
-  def to_param
-    self.slug
-  end
 end
