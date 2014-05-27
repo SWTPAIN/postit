@@ -1,9 +1,7 @@
 <div class="row">
-<%= if logged_in? %>
   <div id="post_<%= post.slug %>_votes_error" class='alert alert-error span12' style='display :none'>
     You can only vote once on a post
-  </div>
-<%= end %>  
+  </div>  
   <div class='span0 well text-center'>
     <% if logged_in? %>
       <%= link_to vote_post_path(post, vote: true), method:'post', remote: true do %>
